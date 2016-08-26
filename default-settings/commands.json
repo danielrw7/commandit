@@ -1,7 +1,6 @@
 {
-	"!": {
-		"commands": [""],
-		"closeOnSuccess": false,
-		"terminal": false
-	}
+    "!": {
+        "commands": ["{0}"],
+        "closeOnSuccess": false
+    }
 }

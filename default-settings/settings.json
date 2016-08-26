@@ -1,9 +1,10 @@
 {
-	"closeOnEsc": true,
-	"closeOnFocusOut": true,
-	"defaultCommandSettings": {
-		"closeOnSuccess": true,
-		"closeOnError": false,
-		"terminal": false
-	}
+    "closeOnEsc": true,
+    "closeOnFocusOut": true,
+    "defaultCommandSettings": {
+        "closeOnSuccess": true,
+        "closeOnError": false,
+        "terminal": false,
+        "minimizeBeforeCommands": false
+    }
 }

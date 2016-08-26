@@ -59,18 +59,36 @@ def run_command(command_key, commands = [], default_command_config={}):
 
     parse_command_tree(command_config, commands_to_run, default_command_config)
 
-    ind = 0
     count = len(commands_to_run)
     if not count > 0:
         fail("No commands to run")
 
     output = ""
+
+    if default_command_config["minimizeBeforeCommands"]:
+        wid = os.popen("xdotool getactivewindow").read()
+        os.popen("xdotool getactivewindow windowminimize").read()
+        commands_to_run.append(("xdotool windowactivate \"{0}\"".format(wid), {"formatArgs": False, "terminal": False}))
+
+        count = len(commands_to_run)
+        
+
+    print "commands_to_run: ", commands_to_run
+
+    ind = 0
     for command, command_config in commands_to_run:
         try:
-            if isinstance(command_args, basestring):
-                command += command_args
-            elif isinstance(command_args, list):
-                command += " ".join(command_args)
+            if command_config["formatArgs"]:
+                if isinstance(command_args, basestring):
+                    command_args = command_args.split()
+                if isinstance(command_args, list):
+                    command = command.format(" ".join(command_args), *command_args)
+            # else:
+            #     if ind == count - 1:
+            #         if isinstance(command_args, basestring):
+            #             command += command_args
+            #         elif isinstance(command_args, list):
+            #             command += " ".join(command_args)
             if command_config["terminal"]:
                 command = 'gnome-terminal --working-directory=/home/daniel --window-with-profile=commandit -e "'+command+'"'
             if len(output):
@@ -80,6 +98,7 @@ def run_command(command_key, commands = [], default_command_config={}):
             print "Output: `{0}`".format(res)
             output += res
             if ind == count - 1:
+                print "returing {0} {1}".format(ind, count)
                 return (output, default_command_config)
         except Exception as e:
             fail(output+"\nError while running command `{0}`\n{1}".format(" ".join(command), str(e)))
