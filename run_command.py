@@ -1,11 +1,12 @@
 import sys, subprocess, os
+import shlex
 
 def fail(msg):
     print "failed: ", msg
     raise Exception(msg)
 
 def parse_command(command_key, commands = []):
-    command_args = command_key.split()
+    command_args = shlex.split(command_key)
 
     try:
         command = commands[command_args[0]]
@@ -73,14 +74,12 @@ def run_command(command_key, commands = [], default_command_config={}):
         count = len(commands_to_run)
         
 
-    print "commands_to_run: ", commands_to_run
-
     ind = 0
     for command, command_config in commands_to_run:
         try:
             if command_config["formatArgs"]:
                 if isinstance(command_args, basestring):
-                    command_args = command_args.split()
+                    command_args = shlex.split(command_args)
                 if isinstance(command_args, list):
                     command = command.format(" ".join(command_args), *command_args)
             # else:
@@ -98,7 +97,6 @@ def run_command(command_key, commands = [], default_command_config={}):
             print "Output: `{0}`".format(res)
             output += res
             if ind == count - 1:
-                print "returing {0} {1}".format(ind, count)
                 return (output, default_command_config)
         except Exception as e:
             fail(output+"\nError while running command `{0}`\n{1}".format(" ".join(command), str(e)))

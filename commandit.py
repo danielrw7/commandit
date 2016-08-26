@@ -83,7 +83,6 @@ class CommandWindow(QWidget):
             print e
             return self.show_error(str(e))
         finally:
-            print command_config
             if command_config["closeOnSuccess"]:
                 self.close()
             else:
