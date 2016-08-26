@@ -7,7 +7,6 @@ def valid_filenames(filenames):
     return map(os.path.realpath, filter(os.path.exists, filenames))
 
 def merge(res, *dicts):
-    print dicts
     for source in dicts:
         for key, value in source.iteritems():
             if isinstance(value, dict):
